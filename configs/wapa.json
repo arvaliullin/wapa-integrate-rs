@@ -1,0 +1,22 @@
+{
+    "name": "x2Integrate",
+    "lang": "rust",
+    "functions": [
+        {
+            "function": "x2Integrate",
+            "args": [
+                0.0,
+                100.0,
+                10000
+            ]
+        },
+        {
+            "function": "x2Integrate",
+            "args": [
+                0.0,
+                50.0,
+                5000
+            ]
+        }
+    ]
+}
