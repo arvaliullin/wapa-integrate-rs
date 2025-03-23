@@ -2,9 +2,9 @@ name: Build and Run WebAssembly
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -19,13 +19,26 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          components: wasm32-unknown-unknown # Компонент для таргета WebAssembly
           profile: minimal
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+            bun-version: latest
+
+      - name: Add wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: (Fallback) Switch to Rust nightly if needed
+        if: failure()
+        run: |
+          echo "Switching to Rust nightly toolchain..."
+          rustup install nightly
+          rustup override set nightly
+          rustup target add wasm32-unknown-unknown
 
       - name: Install wasm-pack
         run: |
           curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
-
 
       - name: Run Tests and Benchmarks
         run: make bench
